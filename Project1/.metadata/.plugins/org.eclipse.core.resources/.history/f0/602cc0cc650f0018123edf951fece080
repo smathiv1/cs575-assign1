@@ -1,0 +1,36 @@
+//============================================================================
+// Name        : CS575_Contacts.cpp
+// Author      : Sivakumar Mathivanan
+// Version     :
+// Copyright   : All rights reserved 2018
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+#include <stdio>
+using namespace std;
+
+int main() {
+	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
+	return 0;
+}
+
+void create(char* filePath​){
+
+}
+
+void sortDirectory(){
+
+}
+
+void searchDirectory(char* name)​{
+
+}
+
+void deleteEntry(char* name){
+
+}
+
+void insertEntry(char* name, char* phone_number){
+
+}

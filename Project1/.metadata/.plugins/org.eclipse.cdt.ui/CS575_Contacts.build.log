@@ -1,0 +1,10 @@
+15:05:24 **** Incremental Build of configuration Debug for project CS575_Contacts ****
+make all 
+Building target: CS575_Contacts
+Invoking: GCC C++ Linker
+g++  -o "CS575_Contacts"  ./src/CS575_Contacts.o   
+Finished building target: CS575_Contacts
+ 
+
+15:05:24 Build Finished (took 105ms)
+

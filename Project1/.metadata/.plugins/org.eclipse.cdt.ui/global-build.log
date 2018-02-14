@@ -1,0 +1,93 @@
+14:17:10 **** Clean-only build of configuration Debug for project CS575_Contacts ****
+make clean 
+rm -rf  ./src/CS575_Contacts.o  ./src/CS575_Contacts.d  CS575_Contacts
+ 
+14:17:10 **** Incremental Build of configuration Debug for project CS575_Contacts ****
+make all 
+Building file: ../src/CS575_Contacts.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/CS575_Contacts.d" -MT"src/CS575_Contacts.d" -o "src/CS575_Contacts.o" "../src/CS575_Contacts.cpp"
+Finished building: ../src/CS575_Contacts.cpp
+ 
+Building target: CS575_Contacts
+Invoking: GCC C++ Linker
+g++  -o "CS575_Contacts"  ./src/CS575_Contacts.o   
+Finished building target: CS575_Contacts
+ 
+14:21:55 **** Incremental Build of configuration Debug for project CS575_Contacts ****
+make all 
+make: Nothing to be done for 'all'.
+14:35:06 **** Incremental Build of configuration Debug for project CS575_Contacts ****
+make all 
+make: Nothing to be done for 'all'.
+14:35:57 **** Incremental Build of configuration Debug for project CS575_Contacts ****
+make all 
+Building target: CS575_Contacts
+Invoking: GCC C++ Linker
+g++  -o "CS575_Contacts"  ./src/CS575_Contacts.o   
+Finished building target: CS575_Contacts
+ 
+14:56:25 **** Incremental Build of configuration Debug for project CS575_Contacts ****
+make all 
+Building file: ../src/CS575_Contacts.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/CS575_Contacts.d" -MT"src/CS575_Contacts.d" -o "src/CS575_Contacts.o" "../src/CS575_Contacts.cpp"
+../src/CS575_Contacts.cpp:10:17: fatal error: stdio: No such file or directory
+src/subdir.mk:25: recipe for target 'src/CS575_Contacts.o' failed
+ #include <stdio>
+                 ^
+compilation terminated.
+make: *** [src/CS575_Contacts.o] Error 1
+14:58:46 **** Incremental Build of configuration Debug for project CS575_Contacts ****
+make all 
+Building file: ../src/CS575_Contacts.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/CS575_Contacts.d" -MT"src/CS575_Contacts.d" -o "src/CS575_Contacts.o" "../src/CS575_Contacts.cpp"
+../src/CS575_Contacts.cpp:18:27: error: stray ‘\342’ in program
+ void create(char* filePath​){
+                           ^
+../src/CS575_Contacts.cpp:18:28: error: stray ‘\200’ in program
+ void create(char* filePath​){
+                            ^
+../src/CS575_Contacts.cpp:18:29: error: stray ‘\213’ in program
+ void create(char* filePath​){
+                             ^
+../src/CS575_Contacts.cpp:26:33: error: stray ‘\342’ in program
+ void searchDirectory(char* name)​{
+                                 ^
+../src/CS575_Contacts.cpp:26:34: error: stray ‘\200’ in program
+ void searchDirectory(char* name)​{
+                                  ^
+../src/CS575_Contacts.cpp:26:35: error: stray ‘\213’ in program
+ void searchDirectory(char* name)​{
+                                   ^
+src/subdir.mk:25: recipe for target 'src/CS575_Contacts.o' failed
+make: *** [src/CS575_Contacts.o] Error 1
+15:02:14 **** Incremental Build of configuration Debug for project CS575_Contacts ****
+make all 
+Building file: ../src/CS575_Contacts.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/CS575_Contacts.d" -MT"src/CS575_Contacts.d" -o "src/CS575_Contacts.o" "../src/CS575_Contacts.cpp"
+Finished building: ../src/CS575_Contacts.cpp
+ 
+Building file: ../src/new.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/new.d" -MT"src/new.d" -o "src/new.o" "../src/new.c"
+Finished building: ../src/new.c
+ 
+Building target: CS575_Contacts
+Invoking: GCC C++ Linker
+g++  -o "CS575_Contacts"  ./src/CS575_Contacts.o ./src/new.o   
+./src/new.o: In function `main':
+/import/linux/home1/smathiv1/cs575/Project1/CS575_Contacts/Debug/../src/new.c:93: multiple definition of `main'
+makefile:45: recipe for target 'CS575_Contacts' failed
+./src/CS575_Contacts.o:/import/linux/home1/smathiv1/cs575/Project1/CS575_Contacts/Debug/../src/CS575_Contacts.cpp:22: first defined here
+collect2: error: ld returned 1 exit status
+make: *** [CS575_Contacts] Error 1
+15:05:24 **** Incremental Build of configuration Debug for project CS575_Contacts ****
+make all 
+Building target: CS575_Contacts
+Invoking: GCC C++ Linker
+g++  -o "CS575_Contacts"  ./src/CS575_Contacts.o   
+Finished building target: CS575_Contacts
+ 
