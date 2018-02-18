@@ -100,32 +100,56 @@ int quickSortDir(directory *pDir){
 	 * adding index to identify each records.
 	 */
 
+	// creating and initializing local values.
+	int k=0;
 	string sArrPhone[total_size];
+	directory dLoc;
+	dLoc.m_records = new record[total_size];
+
+	// populating local dir values.
 	for(int i=0;i<total_size;i++){
-		for(int j=0;j<=i;j++){
-			if(pDir->m_records[i].sLastName == pDir->m_records[j].sLastName){
-				if(pDir->m_records[i].sFirstName == pDir->m_records[j].sFirstName){
-					//if(pDir.m_records[i].sPhone!=pDir.m_records[j].sPhone){
-					sArrPhone[j]=pDir->m_records[j].sPhone;
-					cout<<"sArrPhone["<<j<<"] = "<<sArrPhone[j]<<endl;
-					//}
+		dLoc.m_records[i].sLastName = pDir->m_records[i].sLastName;
+		dLoc.m_records[i].sFirstName = pDir->m_records[i].sFirstName;
+		dLoc.m_records[i].sPhone= pDir->m_records[i].sPhone;
+	}
+
+/*getting array of phone numbers and storing in string array.
+ * NOTE : this quick sort accepts only sorted values of first
+ * name and last name.
+ */
+	for(int i=0;i<total_size;i++){
+			for(int j=0;j<=i;j++){
+				if(dLoc.m_records[i].sLastName == dLoc.m_records[j].sLastName){
+					if(dLoc.m_records[i].sFirstName == dLoc.m_records[j].sFirstName){
+						sArrPhone[j]=dLoc.m_records[j].sPhone;
+						k++;
+						//cout<<"sArrPhone["<<j<<"] = "<<sArrPhone[j]<<endl;
+						//}
+					}
 				}
 			}
 		}
-	}
-	QuickSort(sArrPhone,0,total_size-1);
-	for(int i=0;i<total_size;i++){
-		for(int j=0;j<=i;j++){
-			if(pDir->m_records[i].sLastName == pDir->m_records[j].sLastName){
-				if(pDir->m_records[i].sFirstName == pDir->m_records[j].sFirstName){
-					//if(pDir.m_records[i].sPhone!=pDir.m_records[j].sPhone){
-					pDir->m_records[j].sPhone=sArrPhone[j];
-					//cout<<"After sorting = pDir.m_records["<<j<<"].sPhone = "<<pDir.m_records[j].sPhone<<endl;
-					//}
+	//cout<<"before quicksort!"<<endl;
+		QuickSort(sArrPhone,0,total_size-1);
+
+		cout<<endl<<endl;
+	//cout<<"after quicksort!"<<endl;
+		/*k=0;
+		for(int i=0;i<total_size;i++){
+			for(int j=0;j<=i;j++){
+				if(dLoc.m_records[i].sLastName == dLoc.m_records[j].sLastName){
+					if(dLoc.m_records[i].sFirstName == dLoc.m_records[j].sFirstName){
+						dLoc.m_records[j].sPhone=sArrPhone[k];
+						k++;
+						//cout<<"After sorting = pDir.m_records["<<j<<"].sPhone = "<<pDir.m_records[j].sPhone<<endl;
+						//}
+					}
 				}
 			}
-		}
-	}
+		}*/
+		//pDir = &dLoc;
+
+	return 0;
 }
 /*
  * Function display : display records.
@@ -190,7 +214,7 @@ void create(string sFilePath, directory *pDir)
 void mergeFirstName(directory *pDir, int left, int middle, int right)
 {
 
-	cout<<"Yay!!"<<endl;
+	//cout<<"Yay!!"<<endl;
 	int l_size = middle - left + 1;
 	int r_size = right - middle;
 	int i1 = 0;
@@ -222,9 +246,9 @@ void mergeFirstName(directory *pDir, int left, int middle, int right)
 	while ((i1 < l_size) && (i2 < r_size))
 	{
 		if (dLeft.m_records[i1].sLastName == dRight.m_records[i2].sLastName){
-			cout<<"Yay2!!"<<endl;
+			//cout<<"Yay2!!"<<endl;
 			if(dLeft.m_records[i1].sFirstName <= dRight.m_records[i2].sFirstName){
-				cout<<"Yay4!!"<<endl;
+				//cout<<"Yay4!!"<<endl;
 				pDir -> m_records[i].sLastName = dLeft.m_records[i1].sLastName;
 				pDir -> m_records[i].sFirstName = dLeft.m_records[i1].sFirstName;
 				pDir -> m_records[i].sPhone = dLeft.m_records[i1].sPhone;
@@ -266,7 +290,7 @@ void mergeFirstName(directory *pDir, int left, int middle, int right)
 
 void mergeLastName(directory *pDir, int left, int middle, int right)
 {
-	cout<<"Yay3!!"<<endl;
+	//cout<<"Yay3!!"<<endl;
 	int l_size = middle - left + 1;
 	int r_size = right - middle;
 	int i1 = 0;
@@ -358,11 +382,11 @@ void sortDirectory(directory *pDir, int left, int right)
 		sortDirectory(pDir, (middle + 1), right);
 
 		mergeLastName(pDir, left, middle, right);
-		displayDir(pDir);
+		//displayDir(pDir);
 		//exit(1);
 		//mergeFirstName(pDir, left, middle, right);
 		//displayDir(pDir);
-		cout << endl << endl;
+		//cout << endl << endl;
 	}
 }
 
@@ -386,11 +410,11 @@ void sortDirFirstName(directory *pDir, int left, int right)
 		sortDirFirstName(pDir, (middle + 1), right);
 
 		mergeFirstName(pDir, left, middle, right);
-		displayDir(pDir);
+		//displayDir(pDir);
 		//exit(1);
 		//mergeFirstName(pDir, left, middle, right);
 		//displayDir(pDir);
-		cout << endl << endl;
+		//cout << endl << endl;
 	}
 }
 
@@ -593,14 +617,14 @@ int main(int argc, char* argv[])
 		total_size = total_lines;
 		create(sInputData, &dirPhoneBook); 	// Adding individual records to the array
 		sortDirectory(&dirPhoneBook, 0, (total_lines-1));	// Merge sort
-		cout<<"Sorted according to Last Name"<<endl;
+		//cout<<"Sorted according to Last Name"<<endl;
 		sortDirFirstName(&dirPhoneBook, 0, (total_lines-1));	// Merge sort
-		cout<<"Sorted according to First Name"<<endl;
-		displayDir(&dirPhoneBook);
+		//cout<<"Sorted according to First Name"<<endl;
+		//displayDir(&dirPhoneBook);
 
 		quickSortDir(&dirPhoneBook);
-		cout<<"Quick sort with numbers"<<endl;
-		exit(1);
+		//cout<<"Quick sort with numbers done"<<endl;
+		//displayDir(&dirPhoneBook);
 	}
 	else	// Throws error and requests new entry for file name
 	{
