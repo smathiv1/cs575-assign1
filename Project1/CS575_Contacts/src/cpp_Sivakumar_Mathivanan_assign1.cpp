@@ -35,18 +35,17 @@ struct directory
 
 int total_size;
 
-
 // Swapping two values.
-void swap(size_t *a, size_t *b)
+void swap(string *a, string *b)
 {
-	size_t temp;
+	string temp;
 	temp = *a;
 	*a = *b;
 	*b = temp;
 }
 
 // Partitioning the array on the basis of values at high as pivot value.
-int Partition(size_t a[], int low, int high)
+int Partition(string a[], int low, int high)
 {
 	int pivot, index, i;
 	index = low;
@@ -68,9 +67,10 @@ int Partition(size_t a[], int low, int high)
 }
 
 // Random selection of pivot.
-int RandomPivotPartition(size_t a[], int low, int high)
+int RandomPivotPartition(string a[], int low, int high)
 {
 	int pvt, n;
+	srand(time(NULL));
 	n = rand();
 	// Randomizing the pivot value in the given subpart of array.
 	pvt = low + n%(high-low+1);
@@ -82,7 +82,7 @@ int RandomPivotPartition(size_t a[], int low, int high)
 }
 
 // Implementing QuickSort algorithm.
-int QuickSort(size_t a[], int low, int high)
+int QuickSort(string a[], int low, int high)
 {
 	int pindex;
 	if(low < high)
@@ -95,13 +95,37 @@ int QuickSort(size_t a[], int low, int high)
 	}
 	return 0;
 }
-
 int quickSortDir(directory *pDir){
 	/*
 	 * adding index to identify each records.
 	 */
 
-
+	string sArrPhone[total_size];
+	for(int i=0;i<total_size;i++){
+		for(int j=0;j<=i;j++){
+			if(pDir->m_records[i].sLastName == pDir->m_records[j].sLastName){
+				if(pDir->m_records[i].sFirstName == pDir->m_records[j].sFirstName){
+					//if(pDir.m_records[i].sPhone!=pDir.m_records[j].sPhone){
+					sArrPhone[j]=pDir->m_records[j].sPhone;
+					cout<<"sArrPhone["<<j<<"] = "<<sArrPhone[j]<<endl;
+					//}
+				}
+			}
+		}
+	}
+	QuickSort(sArrPhone,0,total_size-1);
+	for(int i=0;i<total_size;i++){
+		for(int j=0;j<=i;j++){
+			if(pDir->m_records[i].sLastName == pDir->m_records[j].sLastName){
+				if(pDir->m_records[i].sFirstName == pDir->m_records[j].sFirstName){
+					//if(pDir.m_records[i].sPhone!=pDir.m_records[j].sPhone){
+					pDir->m_records[j].sPhone=sArrPhone[j];
+					//cout<<"After sorting = pDir.m_records["<<j<<"].sPhone = "<<pDir.m_records[j].sPhone<<endl;
+					//}
+				}
+			}
+		}
+	}
 }
 /*
  * Function display : display records.
@@ -200,16 +224,22 @@ void mergeFirstName(directory *pDir, int left, int middle, int right)
 		if (dLeft.m_records[i1].sLastName == dRight.m_records[i2].sLastName){
 			cout<<"Yay2!!"<<endl;
 			if(dLeft.m_records[i1].sFirstName <= dRight.m_records[i2].sFirstName){
+				cout<<"Yay4!!"<<endl;
+				pDir -> m_records[i].sLastName = dLeft.m_records[i1].sLastName;
 				pDir -> m_records[i].sFirstName = dLeft.m_records[i1].sFirstName;
 				pDir -> m_records[i].sPhone = dLeft.m_records[i1].sPhone;
 				i1++;
 			}else{
+				pDir -> m_records[i].sLastName = dRight.m_records[i2].sLastName;
 				pDir -> m_records[i].sFirstName = dRight.m_records[i2].sFirstName;
 				pDir -> m_records[i].sPhone = dRight.m_records[i2].sPhone;
 				i2++;
 			}
-			pDir -> m_records[i].sLastName = dLeft.m_records[i1].sLastName;
+		}else{
+			i1++;
+			i2++;
 		}
+		//cout<<"in while loop @ L.239"<<endl;
 		i++;
 	}
 
@@ -236,6 +266,7 @@ void mergeFirstName(directory *pDir, int left, int middle, int right)
 
 void mergeLastName(directory *pDir, int left, int middle, int right)
 {
+	cout<<"Yay3!!"<<endl;
 	int l_size = middle - left + 1;
 	int r_size = right - middle;
 	int i1 = 0;
@@ -564,7 +595,12 @@ int main(int argc, char* argv[])
 		sortDirectory(&dirPhoneBook, 0, (total_lines-1));	// Merge sort
 		cout<<"Sorted according to Last Name"<<endl;
 		sortDirFirstName(&dirPhoneBook, 0, (total_lines-1));	// Merge sort
-		//quickSortDir(&dirPhoneBook);
+		cout<<"Sorted according to First Name"<<endl;
+		displayDir(&dirPhoneBook);
+
+		quickSortDir(&dirPhoneBook);
+		cout<<"Quick sort with numbers"<<endl;
+		exit(1);
 	}
 	else	// Throws error and requests new entry for file name
 	{
