@@ -7,6 +7,7 @@
 //============================================================================
 
 #include<iostream>
+#include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<fstream>
@@ -19,6 +20,7 @@ using namespace std;
  */
 struct record
 {
+	int iIndex;
 	string sFirstName;
 	string sLastName;
 	string sPhone;
@@ -33,6 +35,74 @@ struct directory
 
 int total_size;
 
+
+// Swapping two values.
+void swap(size_t *a, size_t *b)
+{
+	size_t temp;
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+// Partitioning the array on the basis of values at high as pivot value.
+int Partition(size_t a[], int low, int high)
+{
+	int pivot, index, i;
+	index = low;
+	pivot = high;
+
+	// Getting index of pivot.
+	for(i=low; i < high; i++)
+	{
+		if(a[i] < a[pivot])
+		{
+			swap(&a[i], &a[index]);
+			index++;
+		}
+	}
+	// Swapping value at high and at the index obtained.
+	swap(&a[pivot], &a[index]);
+
+	return index;
+}
+
+// Random selection of pivot.
+int RandomPivotPartition(size_t a[], int low, int high)
+{
+	int pvt, n;
+	n = rand();
+	// Randomizing the pivot value in the given subpart of array.
+	pvt = low + n%(high-low+1);
+
+	// Swapping pvt value from high, so pvt value will be taken as pivot while partitioning.
+	swap(&a[high], &a[pvt]);
+
+	return Partition(a, low, high);
+}
+
+// Implementing QuickSort algorithm.
+int QuickSort(size_t a[], int low, int high)
+{
+	int pindex;
+	if(low < high)
+	{
+		// Partitioning array using randomized pivot.
+		pindex = RandomPivotPartition(a, low, high);
+		// Recursively implementing QuickSort.
+		QuickSort(a, low, pindex-1);
+		QuickSort(a, pindex+1, high);
+	}
+	return 0;
+}
+
+int quickSortDir(directory *pDir){
+	/*
+	 * adding index to identify each records.
+	 */
+
+
+}
 /*
  * Function display : display records.
  *
@@ -40,11 +110,15 @@ int total_size;
  *
  * output : print all record values on console
  */
-void display(directory *pDir)
+void displayDir(directory *pDir)
 {
+	for(int i =  0; i < total_size; i++){
+			pDir->m_records[i].iIndex = i+1;
+		}
+
 	for(int i =  0; i < total_size; i++)
 	{
-		cout << " " << pDir -> m_records[i].sFirstName << " " << pDir -> m_records[i].sLastName << ", " << pDir -> m_records[i].sPhone << endl;
+		cout << " " <<pDir->m_records[i].iIndex << " "<< pDir -> m_records[i].sFirstName << " " << pDir -> m_records[i].sLastName << ", " << pDir -> m_records[i].sPhone << endl;
 	}
 }
 
@@ -89,7 +163,78 @@ void create(string sFilePath, directory *pDir)
 
 }
 
-void merge(directory *pDir, int left, int middle, int right)
+void mergeFirstName(directory *pDir, int left, int middle, int right)
+{
+
+	cout<<"Yay!!"<<endl;
+	int l_size = middle - left + 1;
+	int r_size = right - middle;
+	int i1 = 0;
+	int i2 = 0;
+
+
+	directory dLeft;
+	directory dRight;
+
+	dLeft.m_records = new record[l_size];
+	dRight.m_records = new record[r_size];
+
+	for(int i = 0; i < l_size; i++)
+	{
+		dLeft.m_records[i].sFirstName = pDir -> m_records[left + i].sFirstName;
+		dLeft.m_records[i].sLastName = pDir -> m_records[left + i].sLastName;
+		dLeft.m_records[i].sPhone = pDir -> m_records[left + i].sPhone;
+	}
+
+	for(int i = 0; i < r_size; i++)
+	{
+		dRight.m_records[i].sFirstName = pDir -> m_records[middle + 1 + i].sFirstName;
+		dRight.m_records[i].sLastName = pDir -> m_records[middle + 1 + i].sLastName;
+		dRight.m_records[i].sPhone = pDir -> m_records[middle + 1 + i].sPhone;
+	}
+
+	// Merge sort
+	int i = left;
+	while ((i1 < l_size) && (i2 < r_size))
+	{
+		if (dLeft.m_records[i1].sLastName == dRight.m_records[i2].sLastName){
+			cout<<"Yay2!!"<<endl;
+			if(dLeft.m_records[i1].sFirstName <= dRight.m_records[i2].sFirstName){
+				pDir -> m_records[i].sFirstName = dLeft.m_records[i1].sFirstName;
+				pDir -> m_records[i].sPhone = dLeft.m_records[i1].sPhone;
+				i1++;
+			}else{
+				pDir -> m_records[i].sFirstName = dRight.m_records[i2].sFirstName;
+				pDir -> m_records[i].sPhone = dRight.m_records[i2].sPhone;
+				i2++;
+			}
+			pDir -> m_records[i].sLastName = dLeft.m_records[i1].sLastName;
+		}
+		i++;
+	}
+
+	while (i1 < l_size)
+	{
+		pDir -> m_records[i].sLastName = dLeft.m_records[i1].sLastName;
+		pDir -> m_records[i].sFirstName = dLeft.m_records[i1].sFirstName;
+		pDir -> m_records[i].sPhone = dLeft.m_records[i1].sPhone;
+		i1++;
+		i++;
+	}
+
+	while (i2 < r_size)
+	{
+		pDir -> m_records[i].sLastName = dRight.m_records[i2].sLastName;
+		pDir -> m_records[i].sFirstName = dRight.m_records[i2].sFirstName;
+		pDir -> m_records[i].sPhone = dRight.m_records[i2].sPhone;
+		i2++;
+		i++;
+	}
+
+}
+
+
+void mergeLastName(directory *pDir, int left, int middle, int right)
 {
 	int l_size = middle - left + 1;
 	int r_size = right - middle;
@@ -103,7 +248,6 @@ void merge(directory *pDir, int left, int middle, int right)
 	dLeft.m_records = new record[l_size];
 	dRight.m_records = new record[r_size];
 
-	// Storing elements less than middle in newly created array
 	for(int i = 0; i < l_size; i++)
 	{
 		dLeft.m_records[i].sFirstName = pDir -> m_records[left + i].sFirstName;
@@ -111,7 +255,6 @@ void merge(directory *pDir, int left, int middle, int right)
 		dLeft.m_records[i].sPhone = pDir -> m_records[left + i].sPhone;
 	}
 
-	// Storing elements greater than middle in newly created array
 	for(int i = 0; i < r_size; i++)
 	{
 		dRight.m_records[i].sFirstName = pDir -> m_records[middle + 1 + i].sFirstName;
@@ -119,53 +262,27 @@ void merge(directory *pDir, int left, int middle, int right)
 		dRight.m_records[i].sPhone = pDir -> m_records[middle + 1 + i].sPhone;
 	}
 
-	// Merge sort core algorithm
+	// Merge sort
 	int i = left;
 	while ((i1 < l_size) && (i2 < r_size))
 	{
-		if (dLeft.m_records[i1].sLastName <= dRight.m_records[i2].sLastName)
-		{
-			if(dLeft.m_records[i1].sLastName == dRight.m_records[i2].sLastName){
-				cout<<"Last Names are equal, merge sorting by first name"<<endl;
-				cout<<"Phone number in LHS in first if condition= "<<dLeft.m_records[i1].sPhone<<endl;
-				cout<<"Phone number in RHS in first if condition= "<<dRight.m_records[i2].sPhone<<endl;
-				if(dLeft.m_records[i1].sFirstName <= dRight.m_records[i2].sFirstName)
-				{
-					if(dLeft.m_records[i1].sFirstName == dRight.m_records[i2].sFirstName){
-						cout<<"Both First names and last names are equal!"<<endl;
-						cout<<"Phone number in LHS in second if condition= "<<dLeft.m_records[i1].sPhone<<endl;
-						cout<<"Phone number in RHS in second if condition= "<<dRight.m_records[i2].sPhone<<endl;//value in if condition is checked here.
-						//call randomized quick sort for both strings.
-					}
-					pDir -> m_records[i].sFirstName = dLeft.m_records[i1].sFirstName;
-					pDir -> m_records[i].sPhone = dLeft.m_records[i1].sPhone;
-				}
-				else{
-					pDir -> m_records[i].sFirstName = dRight.m_records[i1].sFirstName;
-					pDir -> m_records[i].sPhone = dRight.m_records[i1].sPhone;
-				}
-			}
+		if (dLeft.m_records[i1].sLastName <= dRight.m_records[i2].sLastName){
 			pDir -> m_records[i].sLastName = dLeft.m_records[i1].sLastName;
 			pDir -> m_records[i].sFirstName = dLeft.m_records[i1].sFirstName;
 			pDir -> m_records[i].sPhone = dLeft.m_records[i1].sPhone;
 			i1++;
-
-			cout<< "i1 ="<<i1<<endl;
-			cout<<"pDir -> m_records[i].sLastName "<<pDir -> m_records[i].sLastName<<endl;
+			/*cout<<"pDir -> m_records[i].sLastName "<<pDir -> m_records[i].sLastName<<endl;
 			cout<<"pDir -> m_records[i].sFirstName "<<pDir -> m_records[i].sFirstName<<endl;
-			cout<<"pDir -> m_records[i].sPhone "<<pDir -> m_records[i].sPhone<<endl;
+			cout<<"pDir -> m_records[i].sPhone "<<pDir -> m_records[i].sPhone<<endl;*/
 		}
-		else
-		{
+		else{
 			pDir -> m_records[i].sLastName = dRight.m_records[i2].sLastName;
 			pDir -> m_records[i].sFirstName = dRight.m_records[i2].sFirstName;
 			pDir -> m_records[i].sPhone = dRight.m_records[i2].sPhone;
 			i2++;
-
-			cout<< "i2 ="<<i2<<endl;
-			cout<<"pDir -> m_records[i].sLastName "<<pDir -> m_records[i].sLastName<<endl;
+			/*cout<<"pDir -> m_records[i].sLastName "<<pDir -> m_records[i].sLastName<<endl;
 			cout<<"pDir -> m_records[i].sFirstName "<<pDir -> m_records[i].sFirstName<<endl;
-			cout<<"pDir -> m_records[i].sPhone "<<pDir -> m_records[i].sPhone<<endl;
+			cout<<"pDir -> m_records[i].sPhone "<<pDir -> m_records[i].sPhone<<endl;*/
 		}
 		i++;
 	}
@@ -209,8 +326,39 @@ void sortDirectory(directory *pDir, int left, int right)
 		sortDirectory(pDir, left, middle);
 		sortDirectory(pDir, (middle + 1), right);
 
-		merge(pDir, left, middle, right);
-		display(pDir);
+		mergeLastName(pDir, left, middle, right);
+		displayDir(pDir);
+		//exit(1);
+		//mergeFirstName(pDir, left, middle, right);
+		//displayDir(pDir);
+		cout << endl << endl;
+	}
+}
+
+/*
+ * function	:	sortDirectory
+ *
+ * Inputs	:	directory Pointer, first record, last record
+ *
+ * Output	:	void
+ */
+void sortDirFirstName(directory *pDir, int left, int right)
+{
+	int middle = floor((left + right) / 2);
+
+	if (left < right)
+	{
+		/*
+		 * dividing dir into single elements.
+		 */
+		sortDirFirstName(pDir, left, middle);
+		sortDirFirstName(pDir, (middle + 1), right);
+
+		mergeFirstName(pDir, left, middle, right);
+		displayDir(pDir);
+		//exit(1);
+		//mergeFirstName(pDir, left, middle, right);
+		//displayDir(pDir);
 		cout << endl << endl;
 	}
 }
@@ -222,19 +370,19 @@ int searchDirectory(directory *pDir, string lname, int case_num)
 	int middle = 0;
 	int iLoc = 0;
 
-	cout << "Passed lastName = "<<lname<<endl;
+	/*cout << "Passed lastName = "<<lname<<endl;
 	cout << "total_size = "<<total_size<<endl;
 	cout << "left = "<<left<<endl;
-	cout << "right = "<<right<<endl;
+	cout << "right = "<<right<<endl;*/
 
 	while(left <= right)
 	{
 		middle = floor((left + right)/2);
-		cout<<"middle in while = "<<middle<<endl;
+		//cout<<"middle in while = "<<middle<<endl;
 		if (lname == pDir -> m_records[middle].sLastName)
 		{
 			iLoc = middle;
-			cout<<"iLoc = "<<iLoc<<endl;
+			//cout<<"iLoc = "<<iLoc<<endl;
 			break;
 		}
 		else if (pDir -> m_records[middle].sLastName < lname)
@@ -245,7 +393,7 @@ int searchDirectory(directory *pDir, string lname, int case_num)
 		{
 			right = middle - 1;
 		}
-		cout << "Left - " << left << "; Right - " << right << endl;
+		//cout << "Left - " << left << "; Right - " << right << endl;
 	}
 
 	if (0 == iLoc)
@@ -318,28 +466,29 @@ record* insertEntry(directory *pDir, string entry)
 {
 	string sFirstName, sLastName, sPhone;
 	int iTmp;
-	string sTmp;
+	string sTmp ="\0";
 
 	iTmp = entry.find(" ");
 	sFirstName = entry.substr(0, iTmp);
-	sTmp = entry.substr(iTmp + 1);
+	//cout <<"sFirstName = "<< sFirstName << endl;
+	sTmp = entry.substr(iTmp+1);
+	//cout<<"sTmp = "<<sTmp<<endl;
 
-	// Extracting and storing last name
+	// Last name
 	iTmp = sTmp.find(",");
 	sLastName = sTmp.substr(0, iTmp);
 	sTmp = sTmp.substr(iTmp + 2);
+	//cout << "sLastName = " << sLastName << endl;
 
-	// Extracting and storing contact
+	// Phone number
 	sPhone = sTmp;
-
-	cout<< "FirstName = "<<sFirstName<<"LastName = "<<sLastName<<" Phone = "<<sPhone<<endl;
-	exit(1);
+	//cout << "sPhone = " << sPhone << endl;
 
 	int iEntryLoc = searchDirectory(pDir, sLastName, 1);
 	cout << "iLoc - " << iEntryLoc << endl;
 
 	directory dUpdDir;
-	cout << "Total_size = "<<total_size <<endl;
+	//cout << "Total_size = "<<total_size <<endl;
 	total_size++;
 	dUpdDir.m_records = new record[total_size];
 
@@ -413,6 +562,9 @@ int main(int argc, char* argv[])
 		total_size = total_lines;
 		create(sInputData, &dirPhoneBook); 	// Adding individual records to the array
 		sortDirectory(&dirPhoneBook, 0, (total_lines-1));	// Merge sort
+		cout<<"Sorted according to Last Name"<<endl;
+		sortDirFirstName(&dirPhoneBook, 0, (total_lines-1));	// Merge sort
+		//quickSortDir(&dirPhoneBook);
 	}
 	else	// Throws error and requests new entry for file name
 	{
@@ -431,8 +583,9 @@ int main(int argc, char* argv[])
 		{
 			case 1:
 			{
-				cout << "Enter the name of the person - (FirstName LastName, Phone Number) - ";
-				cin >> new_entry;
+				cout << "Enter the name of the person in this format -FirstName LastName, Phone Number -";
+				cin.ignore();
+				getline(cin,new_entry);
 				dirPhoneBook.m_records = insertEntry(&dirPhoneBook, new_entry);
 				break;
 			}
@@ -450,7 +603,7 @@ int main(int argc, char* argv[])
 			case 4:
 			{
 				// Printing individual record info. Mostly to be pushed into another function in future
-				display(&dirPhoneBook);
+				displayDir(&dirPhoneBook);
 				break;
 			}
 			case 5:
@@ -460,7 +613,7 @@ int main(int argc, char* argv[])
 			}
 			default:
 			{
-				cout << endl << "Enter only from the given options" << endl;
+				cout << endl << "Please enter only from the given options" << endl;
 				goto wrong_input;
 				break;
 			}
